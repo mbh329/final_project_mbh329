@@ -4,7 +4,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY3dob25nLXFyaSIsImEiOiJjazZncWRkZGowb3kyM25vZ
 
 // we want to return to this point and zoom level after the user interacts
 // with the map, so store them in variables
-var initialCenterPoint = [-7893067.210, 5102790.0595]
+var initialCenterPoint = [-70.9024, 41.6250]
 var initialZoom = 13
 
 var LandUseLookup = (code) => {
@@ -68,7 +68,7 @@ map.on('style.load', function() {
   // add a geojson source to the map using our external geojson file
   map.addSource('wetlands-layer', {
     type: 'geojson',
-    data: './data/wetlands_nb.geojson',
+    data: './data/wetlands-nb.geojson',
   });
 
   // let's make sure the source got added by logging the current map state to the console
