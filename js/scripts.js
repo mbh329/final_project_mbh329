@@ -92,9 +92,6 @@ map.on('style.load', function() {
             LandUseLookupSoil(3).color,
           ],
 
-
-
-
         ]
       }
     }
@@ -125,7 +122,7 @@ map.on('style.load', function() {
 
   map.on('mousemove', function (e) {
     // query for the features under the mouse, but only in the lots layer
-    var features = map.queryRenderedFeatures(e.point, {
+    var features = map.queryRenderedFeatures(e.fill, {
         layers: ['fill-soil-nb'],
     });
 
@@ -136,9 +133,8 @@ map.on('style.load', function() {
 
       var hoveredFeature = features[0]
       var featureInfo = `
-        <h4>${hoveredFeature.properties.Address}</h4>
-        <p><strong>Type of Wetland :</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey)).mapunit_na}</p>
-        <p><strong>Zoning:</strong> ${hoveredFeature.properties.Shape_Area}</p>
+        <h4>${hoveredFeature.properties.mapunit_na}</h4>
+        <p><strong>Shape Area :</strong> ${hoveredFeature.properties.Shape_Area}</p>
       `
       $('#feature-info').html(featureInfo)
 
