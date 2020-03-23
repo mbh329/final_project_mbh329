@@ -4,8 +4,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY3dob25nLXFyaSIsImEiOiJjazZncWRkZGowb3kyM25vZ
 
 // we want to return to this point and zoom level after the user interacts
 // with the map, so store them in variables
-var initialCenterPoint = [-70.9024, 41.6250]
-var initialZoom = 13
+var initialCenterPoint = [-70.942970, 41.654956]
+var initialZoom = 10
 
 var LandUseLookupSoil = (code) => {
   switch (code) {
