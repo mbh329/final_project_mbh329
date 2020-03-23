@@ -122,7 +122,7 @@ map.on('style.load', function() {
 
   map.on('mousemove', function (e) {
     // query for the features under the mouse, but only in the lots layer
-    var features = map.queryRenderedFeatures(e.fill, {
+    var features = map.queryRenderedFeatures(e.point, {
         layers: ['fill-soil-nb'],
     });
 
@@ -134,6 +134,7 @@ map.on('style.load', function() {
       var hoveredFeature = features[0]
       var featureInfo = `
         <h4>${hoveredFeature.properties.mapunit_na}</h4>
+        <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey))}</p>
         <p><strong>Shape Area :</strong> ${hoveredFeature.properties.Shape_Area}</p>
       `
       $('#feature-info').html(featureInfo)
