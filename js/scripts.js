@@ -7,38 +7,29 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY3dob25nLXFyaSIsImEiOiJjazZncWRkZGowb3kyM25vZ
 var initialCenterPoint = [-70.9024, 41.6250]
 var initialZoom = 13
 
-var LandUseLookup = (code) => {
+var LandUseLookupSoil = (code) => {
   switch (code) {
     case 0:
       return {
         color: '#8A2BE2',
-        description: 'EDGE OF OPEN OCEAN',
+        description: 'Freetown muck, 0 to 1 percent slopes',
       };
     case 1:
       return {
         color: '#f4f455',
-        description: 'SHORELINE',
+        description: 'Freetown, 0 to 1 percent slopes',
       };
     case 2:
       return {
         color: '#f7d496',
-        description: 'CLOSURE LINE',
+        description: 'Swansea Muck, 0 to 1 percent slopes',
       };
     case 3:
       return {
         color: '#FF9900',
-        description: 'APPARENT WETLAND LIMIT',
+        description: 'Whitman Sandy Loam, 0 to 3 percent slopes, extremely stony',
       };
-      case 7:
-        return {
-          color: '#00FFFF',
-          description: 'HYDROLOGIC CONNECTION',
-        };
-        case 8:
-          return {
-            color: '#7FFF00',
-            description: 'MEAN LOW WATER LINE',
-          };
+
 
   }
 };
@@ -66,9 +57,9 @@ map.addControl(new mapboxgl.NavigationControl());
 map.on('style.load', function() {
 
   // add a geojson source to the map using our external geojson file
-  map.addSource('wetlands-layer', {
+  map.addSource('soil-layer', {
     type: 'geojson',
-    data: './data/wetlands-nb.geojson',
+    data: './data/awc_soil.geojson',
   });
 
   // let's make sure the source got added by logging the current map state to the console
@@ -76,38 +67,31 @@ map.on('style.load', function() {
 
   // add a layer for our custom source
   map.addLayer({
-    id: 'fill-wetlands-nb',
+    id: 'fill-soil-nb',
     type: 'fill',
-    source: 'wetlands-layer',
+    source: 'soil-layer',
     paint: {
       'fill-color': {
         type: 'categorical',
-        property: 'LandUse',
+        property: 'mukey',
         stops: [
           [
-            '00',
-            LandUseLookup(0).color,
+            '779958',
+            LandUseLookupSoil(0).color, //I think I can change these back to 0,1, etc..
           ],
           [
-            '01',
-            LandUseLookup(1).color,
+            '779962',
+            LandUseLookupSoil(1).color,
           ],
           [
-            '02',
-            LandUseLookup(2).color,
+            '780106',
+            LandUseLookupSoil(2).color,
           ],
           [
-            '03',
-            LandUseLookup(3).color,
+            '780131',
+            LandUseLookupSoil(3).color,
           ],
-          [
-            '07',
-            LandUseLookup(7).color,
-          ],
-          [
-            '08',
-            LandUseLookup(8).color,
-          ],
+
 
 
 
@@ -142,7 +126,7 @@ map.on('style.load', function() {
   map.on('mousemove', function (e) {
     // query for the features under the mouse, but only in the lots layer
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['fill-wetlands-nb'],
+        layers: ['fill-soil-nb'],
     });
 
     // if the mouse pointer is over a feature on our layer of interest
@@ -153,8 +137,8 @@ map.on('style.load', function() {
       var hoveredFeature = features[0]
       var featureInfo = `
         <h4>${hoveredFeature.properties.Address}</h4>
-        <p><strong>Type of Wetland :</strong> ${LandUseLookup(parseInt(hoveredFeature.properties.arc_code)).description}</p>
-        <p><strong>Zoning:</strong> ${hoveredFeature.properties.arc_code_d}</p>
+        <p><strong>Type of Wetland :</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey)).mapunit_na}</p>
+        <p><strong>Zoning:</strong> ${hoveredFeature.properties.Shape_Area}</p>
       `
       $('#feature-info').html(featureInfo)
 
