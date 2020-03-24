@@ -7,27 +7,56 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY3dob25nLXFyaSIsImEiOiJjazZncWRkZGowb3kyM25vZ
 var initialCenterPoint = [-70.942970, 41.654956]
 var initialZoom = 10
 
+//This is the lookup code for the soils layer [awc_soil.geojson]
 var LandUseLookupSoil = (code) => {
   switch (code) {
     case 0:
       return {
-        color: '#8A2BE2',
+        color: '#B8860B',
         description: 'Freetown muck, 0 to 1 percent slopes',
       };
     case 1:
       return {
-        color: '#f4f455',
-        description: 'Freetown, 0 to 1 percent slopes',
+        color: '#CD853F',
+        description: 'Freetown, 0 to 1 percent slopes, ponded',
       };
     case 2:
       return {
-        color: '#f7d496',
+        color: '#D2691E',
         description: 'Swansea Muck, 0 to 1 percent slopes',
       };
     case 3:
       return {
-        color: '#FF9900',
+        color: '#8B4513',
         description: 'Whitman Sandy Loam, 0 to 3 percent slopes, extremely stony',
+      };
+
+
+  }
+};
+
+// This is the Lookupcode for the urban fill layer
+var LandUseLookupUrbanFill = (code) => {
+  switch (code) {
+    case 0:
+      return {
+        color: '#a2b9bc',
+        description: 'Dumps',
+      };
+    case 1:
+      return {
+        color: '#b2ad7f',
+        description: 'Pits - Udorthents Complex, gravelly',
+      };
+    case 2:
+      return {
+        color: '#878f99',
+        description: 'Udorthents, smoothed',
+      };
+    case 3:
+      return {
+        color: '#6b5b95',
+        description: 'Urban Land',
       };
 
 
@@ -56,18 +85,20 @@ map.addControl(new mapboxgl.NavigationControl());
 // wait for the initial style to Load
 map.on('style.load', function() {
 
-  // add a geojson source to the map using our external geojson file
+  // add soil source layer from our external data folder
   map.addSource('soil-layer', {
     type: 'geojson',
     data: './data/awc_soil.geojson',
   });
 
+
+
   // let's make sure the source got added by logging the current map state to the console
   console.log(map.getStyle().sources)
 
-  // add a layer for our custom source
+  // add soils layer
   map.addLayer({
-    id: 'fill-soil-nb',
+    id: 'fill-soil-id',
     type: 'fill',
     source: 'soil-layer',
     paint: {
@@ -97,6 +128,54 @@ map.on('style.load', function() {
     }
   })
 
+  // add urban fill layer from our external data folder
+    map.addSource('urban-fill-layer', {
+      type: 'geojson',
+      data: './data/urban_fill.geojson',
+    });
+
+// try to console
+//console.log(map.getStyle().sources)
+
+// add urban fill layer
+    map.addLayer({
+      id: 'urban-fill-id',
+      type: 'fill',
+      source: 'urban-fill-layer',
+      paint: {
+        'fill-color': {
+          type: 'categorical',
+          property: 'mukey',
+          stops: [
+            [
+              '779958',
+              LandUseLookupUrbanFill(0).color, //I think I can change these back to 0,1, etc..
+            ],
+            [
+              '779962',
+              LandUseLookupUrbanFill(1).color,
+            ],
+            [
+              '780106',
+              LandUseLookupUrbanFill(2).color,
+            ],
+            [
+              '780131',
+              LandUseLookupUrbanFill(3).color,
+            ],
+
+          ]
+        }
+      }
+    })
+  // add Atlantic White Cedar Layer from our external data folder
+
+  map.addSource('awc-wetland-layer', {
+    type: 'geojson',
+    data: './data/awc_wetland.geojson',
+    });
+
+
   // add an empty data source, which we will use to highlight the lot the user is hovering over
   map.addSource('highlight-feature', {
     type: 'geojson',
@@ -106,7 +185,7 @@ map.on('style.load', function() {
     }
   })
 
-  // add a layer for the highlighted lot
+  // add a layer for the highlighted polygon
   map.addLayer({
     id: 'highlight-line',
     type: 'line',
@@ -123,7 +202,7 @@ map.on('style.load', function() {
   map.on('mousemove', function (e) {
     // query for the features under the mouse, but only in the lots layer
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['fill-soil-nb'],
+        layers: ['fill-soil-id'],
     });
 
     // if the mouse pointer is over a feature on our layer of interest
