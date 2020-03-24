@@ -63,6 +63,18 @@ var LandUseLookupUrbanFill = (code) => {
   }
 };
 
+
+// Create lookup var for awc
+var LandUseLookupAWC = (code) => {
+  switch (code) {
+    case 0:
+      return {
+        color: '#a2b9bc',
+        description: 'Dumps',
+      };
+
+  }
+};
 // set the default text for the feature-info div
 
 var defaultText = '<p>Move the mouse over the map to get more info on a selected feature</p>'
@@ -202,7 +214,7 @@ map.on('style.load', function() {
   map.on('mousemove', function (e) {
     // query for the features under the mouse, but only in the lots layer
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['fill-soil-id'],
+        layers: ['fill-soil-id', 'urban-fill-id',],
     });
 
     // if the mouse pointer is over a feature on our layer of interest
