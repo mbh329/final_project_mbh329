@@ -38,22 +38,22 @@ var LandUseLookupSoil = (code) => {
 // This is the Lookupcode for the urban fill layer
 var LandUseLookupUrbanFill = (code) => {
   switch (code) {
-    case 0:
+    case 4:
       return {
         color: '#a2b9bc',
         description: 'Dumps',
       };
-    case 1:
+    case 5:
       return {
         color: '#b2ad7f',
         description: 'Pits - Udorthents Complex, gravelly',
       };
-    case 2:
+    case 6:
       return {
         color: '#878f99',
         description: 'Udorthents, smoothed',
       };
-    case 3:
+    case 7:
       return {
         color: '#6b5b95',
         description: 'Urban Land',
@@ -64,17 +64,6 @@ var LandUseLookupUrbanFill = (code) => {
 };
 
 
-// Create lookup var for awc
-var LandUseLookupAWC = (code) => {
-  switch (code) {
-    case 0:
-      return {
-        color: '#a2b9bc',
-        description: 'Dumps',
-      };
-
-  }
-};
 // set the default text for the feature-info div
 
 var defaultText = '<p>Move the mouse over the map to get more info on a selected feature</p>'
@@ -161,19 +150,19 @@ map.on('style.load', function() {
           stops: [
             [
               '779958',
-              LandUseLookupUrbanFill(0).color, //I think I can change these back to 0,1, etc..
+              LandUseLookupUrbanFill(4).color, //I think I can change these back to 0,1, etc..
             ],
             [
               '779962',
-              LandUseLookupUrbanFill(1).color,
+              LandUseLookupUrbanFill(5).color,
             ],
             [
               '780106',
-              LandUseLookupUrbanFill(2).color,
+              LandUseLookupUrbanFill(6).color,
             ],
             [
               '780131',
-              LandUseLookupUrbanFill(3).color,
+              LandUseLookupUrbanFill(7).color,
             ],
 
           ]
@@ -181,13 +170,24 @@ map.on('style.load', function() {
       }
     })
   // add Atlantic White Cedar Layer from our external data folder
-
+  //Instead of explictly calling a function just call the color here as its only 1
   map.addSource('awc-wetland-layer', {
     type: 'geojson',
     data: './data/awc_wetland.geojson',
     });
 
 
+    map.addLayer({
+      id: 'awc-wetland-id',
+      type: 'fill',
+      source: 'awc-wetland-layer',
+      paint: {
+           'fill-opacity': 0.9,
+           'fill-color': '#2A542B',
+         }
+       });
+
+console.log(map.getStyle().sources)
   // add an empty data source, which we will use to highlight the lot the user is hovering over
   map.addSource('highlight-feature', {
     type: 'geojson',
@@ -209,12 +209,41 @@ map.on('style.load', function() {
     }
   });
 
-  // listen for the mouse moving over the map and react when the cursor is over our data
+// Toggle layers in a little box on the right hand
+  var toggleableLayerIds = [ 'awc-wetland-id', 'urban-fill-id', 'fill-soil-id'];
+
+  for (var i = 0; i < toggleableLayerIds.length; i++) {
+      var id = toggleableLayerIds[i];
+
+      var link = document.createElement('a');
+      link.href = '#';
+      link.className = 'active';
+      link.textContent = id;
+
+      link.onclick = function (e) {
+          var clickedLayer = this.textContent;
+          e.preventDefault();
+          e.stopPropagation();
+
+          var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+          if (visibility === 'visible') {
+              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+              this.className = '';
+          } else {
+              this.className = 'active';
+              map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+          }
+      };
+
+      var layers = document.getElementById('menu');
+      layers.appendChild(link);
+  }
 
   map.on('mousemove', function (e) {
     // query for the features under the mouse, but only in the lots layer
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['fill-soil-id', 'urban-fill-id',],
+        layers: ['fill-soil-id', 'urban-fill-id', 'awc-wetland-id'],
     });
 
     // if the mouse pointer is over a feature on our layer of interest
@@ -227,6 +256,9 @@ map.on('style.load', function() {
         <h4>${hoveredFeature.properties.mapunit_na}</h4>
         <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey))}</p>
         <p><strong>Shape Area :</strong> ${hoveredFeature.properties.Shape_Area}</p>
+
+        <h4>${hoveredFeature.properties.mapunit_na} </h4>
+        <p><strong>Land Use:</strong> ${LandUseLookupUrbanFill(parseInt(hoveredFeature.properties.mukey))}</p>
       `
       $('#feature-info').html(featureInfo)
 
