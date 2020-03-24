@@ -30,14 +30,6 @@ var LandUseLookupSoil = (code) => {
         color: '#8B4513',
         description: 'Whitman Sandy Loam, 0 to 3 percent slopes, extremely stony',
       };
-
-
-  }
-};
-
-// This is the Lookupcode for the urban fill layer
-var LandUseLookupUrbanFill = (code) => {
-  switch (code) {
     case 4:
       return {
         color: '#a2b9bc',
@@ -59,9 +51,8 @@ var LandUseLookupUrbanFill = (code) => {
         description: 'Urban Land',
       };
 
-
-  }
-};
+      }
+    };
 
 
 // set the default text for the feature-info div
@@ -149,20 +140,20 @@ map.on('style.load', function() {
           property: 'mukey',
           stops: [
             [
-              '779958',
-              LandUseLookupUrbanFill(4).color, //I think I can change these back to 0,1, etc..
+              '779955',
+              LandUseLookupSoil(4).color, //I think I can change these back to 0,1, etc..
             ],
             [
-              '779962',
-              LandUseLookupUrbanFill(5).color,
+              '780066',
+              LandUseLookupSoil(5).color,
             ],
             [
-              '780106',
-              LandUseLookupUrbanFill(6).color,
+              '780111',
+              LandUseLookupSoil(6).color,
             ],
             [
-              '780131',
-              LandUseLookupUrbanFill(7).color,
+              '780113',
+              LandUseLookupSoil(7).color,
             ],
 
           ]
@@ -257,8 +248,6 @@ console.log(map.getStyle().sources)
         <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey))}</p>
         <p><strong>Shape Area :</strong> ${hoveredFeature.properties.Shape_Area}</p>
 
-        <h4>${hoveredFeature.properties.mapunit_na} </h4>
-        <p><strong>Land Use:</strong> ${LandUseLookupUrbanFill(parseInt(hoveredFeature.properties.mukey))}</p>
       `
       $('#feature-info').html(featureInfo)
 
