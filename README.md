@@ -2,6 +2,7 @@
 
 The purpose of this map is to highlight the current extent of the  nativeAtlantic White Cedar wetlands in New Bedford, Massachusetts and showcase the habitat loss and potential areas for Atlantic White Cedar regrowth.
 
+![extra_large_e34260f60d00e161a7d6af9fd0b776f7](https://user-images.githubusercontent.com/41444592/77386392-13395080-6d61-11ea-837a-f994f0dd2aae.jpg)
 
 
 ## Data Sources:
