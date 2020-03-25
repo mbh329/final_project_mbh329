@@ -169,7 +169,7 @@ map.on('style.load', function() {
 
 
     map.addLayer({
-      id: 'awc-wetland-id',
+      id: 'awc-wetland-id', //original awc-wetland-id
       type: 'fill',
       source: 'awc-wetland-layer',
       paint: {
@@ -247,6 +247,9 @@ console.log(map.getStyle().sources)
         <h4>${hoveredFeature.properties.mapunit_na}</h4>
         <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey))}</p>
         <p><strong>Shape Area :</strong> ${hoveredFeature.properties.Shape_Area}</p>
+
+        <h4>${hoveredFeature.properties.IT_VALDESC} </h4>
+        <p><strong> Shape Area (SqMi) </strong> ${hoveredFeature.properties.AREASQMI}</p>
 
       `
       $('#feature-info').html(featureInfo)
