@@ -71,8 +71,35 @@ var initOptions = {
 // create the new map
 var map = new mapboxgl.Map(initOptions);
 
-// add zoom and rotation controls to the map.
-map.addControl(new mapboxgl.NavigationControl());
+//disable the scroll bar
+
+map.scrollZoom.disable();
+
+
+
+// Add 3 popups  of typical areas of study
+new mapboxgl.Marker(1)
+  .setLngLat([-70.968588,41.687658])
+  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+   .setHTML('Atlantic White Cedar Swamp'))
+  .addTo(map);
+
+
+  new mapboxgl.Marker(2)
+    .setLngLat([-70.928274,41.640380])
+    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+     .setHTML('Urban Land'))
+    .addTo(map);
+
+  new mapboxgl.Marker(3)
+    .setLngLat([-70.954930, 41.748998])
+    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+      .setHTML('Freetown Muck'))
+    .addTo(map);
+
+
+
+
 
 // wait for the initial style to Load
 map.on('style.load', function() {
@@ -90,10 +117,11 @@ map.on('style.load', function() {
 
   // add soils layer
   map.addLayer({
-    id: 'fill-soil-id',
+    id: 'Wetland Soils',
     type: 'fill',
     source: 'soil-layer',
     paint: {
+      'fill-opacity': 0.3,
       'fill-color': {
         type: 'categorical',
         property: 'mukey',
@@ -131,10 +159,11 @@ map.on('style.load', function() {
 
 // add urban fill layer
     map.addLayer({
-      id: 'urban-fill-id',
+      id: 'Urban Fill (Udorthents)',
       type: 'fill',
       source: 'urban-fill-layer',
       paint: {
+        'fill-opacity': 0.3,
         'fill-color': {
           type: 'categorical',
           property: 'mukey',
@@ -169,7 +198,7 @@ map.on('style.load', function() {
 
 
     map.addLayer({
-      id: 'awc-wetland-id', //original awc-wetland-id
+      id: 'Atlantic White Cedar Swamp ', //original Atlantic White Cedar Swamp
       type: 'fill',
       source: 'awc-wetland-layer',
       paint: {
@@ -201,7 +230,7 @@ console.log(map.getStyle().sources)
   });
 
 // Toggle layers in a little box on the right hand
-  var toggleableLayerIds = [ 'awc-wetland-id', 'urban-fill-id', 'fill-soil-id'];
+  var toggleableLayerIds = [ 'Atlantic White Cedar Swamp ', 'Wetland Soils', 'Urban Fill (Udorthents)'];
 
   for (var i = 0; i < toggleableLayerIds.length; i++) {
       var id = toggleableLayerIds[i];
@@ -234,7 +263,7 @@ console.log(map.getStyle().sources)
   map.on('mousemove', function (e) {
     // query for the features under the mouse, but only in the lots layer
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['fill-soil-id', 'urban-fill-id', 'awc-wetland-id'],
+        layers: ['Wetland Soils', 'Urban Fill (Udorthents)', 'Atlantic White Cedar Swamp '],
     });
 
     // if the mouse pointer is over a feature on our layer of interest
