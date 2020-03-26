@@ -51,6 +51,7 @@ var LandUseLookupSoil = (code) => {
         description: 'Urban Land',
       };
 
+
       }
     };
 
@@ -73,8 +74,8 @@ var map = new mapboxgl.Map(initOptions);
 
 //disable the scroll bar
 
-map.scrollZoom.disable();
-
+var nav = new mapboxgl.NavigationControl();
+map.addControl(nav, 'top-left');
 
 
 // Add 3 popups  of typical areas of study
@@ -91,7 +92,7 @@ new mapboxgl.Marker(1)
      .setHTML('Urban Land'))
     .addTo(map);
 
-// create a marker for freetown muck 
+// create a marker for freetown muck
   new mapboxgl.Marker(3)
     .setLngLat([-70.954930, 41.748998])
     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
@@ -275,8 +276,8 @@ console.log(map.getStyle().sources)
       var hoveredFeature = features[0]
       var featureInfo = `
         <h4>${hoveredFeature.properties.mapunit_na}</h4>
-        <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey))}</p>
-        <p><strong>Shape Area :</strong> ${hoveredFeature.properties.Shape_Area}</p>
+        <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey)).description}</p>
+
 
         <h4>${hoveredFeature.properties.IT_VALDESC} </h4>
         <p><strong> Shape Area (SqMi) </strong> ${hoveredFeature.properties.AREASQMI}</p>
