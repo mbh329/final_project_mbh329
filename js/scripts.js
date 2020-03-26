@@ -7,7 +7,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY3dob25nLXFyaSIsImEiOiJjazZncWRkZGowb3kyM25vZ
 var initialCenterPoint = [-70.942970, 41.654956]
 var initialZoom = 10
 
-//This is the lookup code for the soils layer [awc_soil.geojson]
+//This is the lookup code for the all layers - converted layers in QGIS to have matching codes
 var LandUseLookupSoil = (code) => {
   switch (code) {
     case 0:
@@ -85,33 +85,30 @@ map.addControl(nav, 'top-left');
 
 // Add 3 popups  of typical areas of study
 new mapboxgl.Marker(1)
-  .setLngLat([-70.968588,41.687658])
-  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-   .setHTML('<strong>Atlantic White Cedar Swamp (Wooded Swamp Coniferous)</strong><p>Freshwater Wetlands that extend from mid Maine to mid Florida. They grow primarily in organic soils commonly known as "peat" and "muck". </p>'))
+  .setLngLat([-70.968588, 41.687658])
+  .setPopup(new mapboxgl.Popup({
+      offset: 0
+    }) // add popups
+    .setHTML('<strong>Atlantic White Cedar Swamp (Wooded Swamp Coniferous)</strong><p>Freshwater Wetlands that extend from mid Maine to mid Florida within 200km of the coast. They grow primarily in organic soils commonly known as "peat" and "muck". They occupy only a fraction of their former range. </p><img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/2013-05-10_13_55_05_Atlantic_White_Cedar_swamp_along_the_Mount_Misery_Trail_in_Brendan_T._Byrne_State_Forest.JPG" height="175" width="200">'))
   .addTo(map);
 
-//create a marker for urban land
-  new mapboxgl.Marker(2)
-    .setLngLat([-70.928274,41.640380])
-    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-     .setHTML('<strong>Urban Fill </strong><p> Typical of urbanized areas where the landscape was often filled with material from quarrys and gravel pits to support large buildings and roads. They can contain various materials including human waste, heavy metals, and coal ash. </p>'))
-    .addTo(map);
+//create a marker for urban land and add text and image to pop up - there has to be a better way to do this
+new mapboxgl.Marker(2)
+  .setLngLat([-70.927497, 41.679681])
+  .setPopup(new mapboxgl.Popup({
+      offset: 0
+    }) // add popups
+    .setHTML('<strong>Urban Fill </strong><p> Typical of urbanized areas where the landscape was often filled with material from quarrys and gravel pits to support large buildings and roads. They can contain various materials including human waste, heavy metals, and coal ash. </p> <img src="https://e2s.us/wp-content/uploads/2015/01/E2S_York-PA-Brownfield-Remediation-Urban-Fill.jpg" height="175" width="200">'))
+  .addTo(map);
 
-// create a marker for freetown muck
-  new mapboxgl.Marker(3)
-    .setLngLat([-70.954930, 41.748998])
-    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-      .setHTML('<strong> Freetown & Swansea Muck  </strong><p> These soils are generally classified as very wet soils that are fromed in highly decompossed organic material. These bogs can form in ancient glaical lakes, outwash plains, and alluvial plains. Generally these soils are forested and are not suitable for agriculture. The main agricultural product produced in these soils are Cranberries! </p>'))
-    .addTo(map);
-
-
-// Add a GeoJSON source with 3 points.
-
-
-
-
-
-
+// create a marker for freetown muck and add text and image to pop up
+new mapboxgl.Marker(3)
+  .setLngLat([-70.954930, 41.748998])
+  .setPopup(new mapboxgl.Popup({
+      offset: 0
+    }) // add popups
+    .setHTML('<strong> Freetown & Swansea Muck  </strong><p> These soils are generally classified as very wet soils that are fromed in highly decompossed organic material. These bogs can form in ancient glaical lakes and alluvial plains. Generally these soils are forested and are not suitable for agriculture. The main agricultural product produced in these soils are Cranberries! </p><img src="https://thedailyadventuresofme.com/wp-content/uploads/2018/10/submerged-cranberry-bog-e1540472741339.jpg" height="175" width="200">'))
+  .addTo(map);
 
 
 
@@ -295,8 +292,8 @@ map.on('style.load', function() {
 
       var hoveredFeature = features[0]
       var featureInfo = `
-        <h4>${hoveredFeature.properties.mapunit_na}</h4>
-        <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey))}</p>
+        <h2>${hoveredFeature.properties.mapunit_na}</h2>
+
 
 
       `

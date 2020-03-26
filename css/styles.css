@@ -1,56 +1,65 @@
 /* use a non-serif font */
 html {
-  font-family: 'verdana', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+}
+/* Try to set font and position of popups*/
+.mapboxgl-popup {
+  max-width: 800px;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
+.mapboxgl-popup-anchor-left {
+  margin-left: 10px;
+}
 
-
+/* CSS for toggle layer on and off*/
 #menu {
-    background: #fff;
-    position: absolute;
-    z-index: 1;
-    top: 10px;
-    right: 10px;
-    border-radius: 3px;
-    width: 120px;
-    border: 1px solid rgba(0,0,0,0.4);
-    font-family: 'Open Sans', sans-serif;
+  background: #fff;
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
+  border-radius: 3px;
+  width: 120px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  font-family: 'Open Sans', sans-serif;
 }
 
 #menu a {
-    font-size: 13px;
-    color: #404040;
-    display: block;
-    margin: 0;
-    padding: 0;
-    padding: 10px;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(0,0,0,0.25);
-    text-align: center;
+  font-size: 13px;
+  color: #404040;
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding: 10px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  text-align: center;
 }
 
 #menu a:last-child {
-    border: none;
+  border: none;
 }
 
 #menu a:hover {
-    background-color: #f8f8f8;
-    color: #404040;
+  background-color: #f8f8f8;
+  color: #404040;
 }
 
 #menu a.active {
-    background-color: #3887be;
-    color: #ffffff;
+  background-color: #3887be;
+  color: #ffffff;
 }
 
 #menu a.active:hover {
-    background: #3074a4;
+  background: #3074a4;
 }
 
-
 /* get rid of the browser's default margin and padding around the body */
-body { margin: 0; padding: 0; }
-
+body {
+  margin: 0;
+  padding: 0;
+}
 
 /* absolute position the map container as full screen, leaving 300 pixels on the left */
 #map-container {
@@ -79,7 +88,7 @@ h3 {
   font-weight: 600;
   font-size: 1rem;
   width: 100%;
-  margin-bottom:15px;
+  margin-bottom: 15px;
 }
 
 /* on hover, make the background darker and turn the cursor to a pointer */
@@ -92,7 +101,6 @@ button:hover {
   background: #2E8B57;
   padding: 15px;
   min-height: 150px;
-
 }
 
 /* sidebar is fixed with and positioned to the left */
