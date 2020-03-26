@@ -84,13 +84,14 @@ new mapboxgl.Marker(1)
    .setHTML('Atlantic White Cedar Swamp'))
   .addTo(map);
 
-
+//create a marker for urban land
   new mapboxgl.Marker(2)
     .setLngLat([-70.928274,41.640380])
     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
      .setHTML('Urban Land'))
     .addTo(map);
 
+// create a marker for freetown muck 
   new mapboxgl.Marker(3)
     .setLngLat([-70.954930, 41.748998])
     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
