@@ -5,40 +5,38 @@
       <title>Atlantic White Cedar Wetlands - New Bedford, Mass</title>
       <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/favicon.ico" type="image/x-icon">
+      <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
       <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
       <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
       <link href='css/styles.css' rel='stylesheet' />
-      <script src="https://kit.fontawesome.com/9733376451.js" crossorigin="anonymous"></script>
 
-<style>
-    body { margin:0; padding:0; }
-    #map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
 
   </head>
   <body>
 
+    <nav id="menu"></nav>
+    <div id="map"></div>
+        <!-- the sidebar is fixed width and will contain a title, some text, and buttons -->
+        <div id='sidebar'>
+          <h4>Atlantic White Cedar Swamp: An Icon of the Coastal Atlantic United States </h3>
+          <h5>This map shows the current extent of Atlantic White Cedar Swamp (AWCS), soils that provide
+            a habitable environment for Atlantic White Cedar Swamps (recent historical extent of AWCS),
+            and urban areas that have been filled for human development (AWCS extent before urbanization) in
+            and around the historic whaling town of New Bedford, Massachusetts. </h5>
+            <h5> Toggle Layers on and off to see the impact of human development on our native flora </h5>
 
-<nav id="menu"></nav>
-<div id="map"></div>
-    <!-- the sidebar is fixed width and will contain a title, some text, and buttons -->
-    <div id='sidebar'>
-      <h4>Atlantic White Cedar Swamp: An Icon of the Coastal Atlantic United States </h3>
-      <h5>This map shows the current extent of Atlantic White Cedar Swamp (AWCS), soils that provide
-        a habitable environment for Atlantic White Cedar Swamps (recent historical extent of AWCS),
-        and urban areas that have been filled for human development (AWCS extent before urbanization) in
-        and around the historic whaling town of New Bedford, Massachusetts. </h5>
-        <h5> Toggle Layers on and off to see the impact of human development on our native flora </h5>
+          <div id='feature-info'>
+          </div>
+        </div>
 
-      <div id='feature-info'>
-      </div>
-    </div>
-    <!-- close sidebar -->
+
+
     <!-- this is the map container, which will hold the mapboxGL map -->
     <div id='map-container'></div>
 
     <!-- Load mapboxGL, jQuery, then our local javascript files -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+    <script src="https://kit.fontawesome.com/bf56708a30.js" crossorigin="anonymous"></script>
     <script
       src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="

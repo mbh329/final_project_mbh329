@@ -13,47 +13,52 @@ var LandUseLookupSoil = (code) => {
     case 0:
       return {
         color: '#B8860B',
-        description: 'Freetown muck, 0 to 1 percent slopes',
+          description: 'Freetown muck, 0 to 1 percent slopes',
       };
     case 1:
       return {
         color: '#CD853F',
-        description: 'Freetown, 0 to 1 percent slopes, ponded',
+          description: 'Freetown, 0 to 1 percent slopes, ponded',
       };
     case 2:
       return {
         color: '#D2691E',
-        description: 'Swansea Muck, 0 to 1 percent slopes',
+          description: 'Swansea Muck, 0 to 1 percent slopes',
       };
     case 3:
       return {
         color: '#8B4513',
-        description: 'Whitman Sandy Loam, 0 to 3 percent slopes, extremely stony',
+          description: 'Whitman Sandy Loam, 0 to 3 percent slopes, extremely stony',
       };
     case 4:
       return {
         color: '#a2b9bc',
-        description: 'Dumps',
+          description: 'Dumps',
       };
     case 5:
       return {
         color: '#b2ad7f',
-        description: 'Pits - Udorthents Complex, gravelly',
+          description: 'Pits - Udorthents Complex, gravelly',
       };
     case 6:
       return {
         color: '#878f99',
-        description: 'Udorthents, smoothed',
+          description: 'Udorthents, smoothed',
       };
     case 7:
       return {
         color: '#6b5b95',
-        description: 'Urban Land',
+          description: 'Urban Land',
+      };
+    case 8:
+      return {
+        color: '#2A542B',
+          description: 'Atlantic White Cedar Swamp',
       };
 
 
-      }
-    };
+  }
+};
 
 
 // set the default text for the feature-info div
@@ -82,22 +87,29 @@ map.addControl(nav, 'top-left');
 new mapboxgl.Marker(1)
   .setLngLat([-70.968588,41.687658])
   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-   .setHTML('Atlantic White Cedar Swamp'))
+   .setHTML('<strong>Atlantic White Cedar Swamp (Wooded Swamp Coniferous)</strong><p>Freshwater Wetlands that extend from mid Maine to mid Florida. They grow primarily in organic soils commonly known as "peat" and "muck". </p>'))
   .addTo(map);
 
 //create a marker for urban land
   new mapboxgl.Marker(2)
     .setLngLat([-70.928274,41.640380])
     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-     .setHTML('Urban Land'))
+     .setHTML('<strong>Urban Fill </strong><p> Typical of urbanized areas where the landscape was often filled with material from quarrys and gravel pits to support large buildings and roads. They can contain various materials including human waste, heavy metals, and coal ash. </p>'))
     .addTo(map);
 
 // create a marker for freetown muck
   new mapboxgl.Marker(3)
     .setLngLat([-70.954930, 41.748998])
     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-      .setHTML('Freetown Muck'))
+      .setHTML('<strong> Freetown & Swansea Muck  </strong><p> These soils are generally classified as very wet soils that are fromed in highly decompossed organic material. These bogs can form in ancient glaical lakes, outwash plains, and alluvial plains. Generally these soils are forested and are not suitable for agriculture. The main agricultural product produced in these soils are Cranberries! </p>'))
     .addTo(map);
+
+
+// Add a GeoJSON source with 3 points.
+
+
+
+
 
 
 
@@ -106,16 +118,13 @@ new mapboxgl.Marker(1)
 // wait for the initial style to Load
 map.on('style.load', function() {
 
+
   // add soil source layer from our external data folder
   map.addSource('soil-layer', {
     type: 'geojson',
     data: './data/awc_soil.geojson',
   });
 
-
-
-  // let's make sure the source got added by logging the current map state to the console
-  console.log(map.getStyle().sources)
 
   // add soils layer
   map.addLayer({
@@ -151,65 +160,76 @@ map.on('style.load', function() {
   })
 
   // add urban fill layer from our external data folder
-    map.addSource('urban-fill-layer', {
-      type: 'geojson',
-      data: './data/urban_fill.geojson',
-    });
+  map.addSource('urban-fill-layer', {
+    type: 'geojson',
+    data: './data/urban_fill.geojson',
+  });
 
-// try to console
-//console.log(map.getStyle().sources)
+  // try to console
+  //console.log(map.getStyle().sources)
 
-// add urban fill layer
-    map.addLayer({
-      id: 'Urban Fill (Udorthents)',
-      type: 'fill',
-      source: 'urban-fill-layer',
-      paint: {
-        'fill-opacity': 0.3,
-        'fill-color': {
-          type: 'categorical',
-          property: 'mukey',
-          stops: [
-            [
-              '779955',
-              LandUseLookupSoil(4).color, //I think I can change these back to 0,1, etc..
-            ],
-            [
-              '780066',
-              LandUseLookupSoil(5).color,
-            ],
-            [
-              '780111',
-              LandUseLookupSoil(6).color,
-            ],
-            [
-              '780113',
-              LandUseLookupSoil(7).color,
-            ],
+  // add urban fill layer
+  map.addLayer({
+    id: 'Urban Fill (Udorthents)',
+    type: 'fill',
+    source: 'urban-fill-layer',
+    paint: {
+      'fill-opacity': 0.3,
+      'fill-color': {
+        type: 'categorical',
+        property: 'mukey',
+        stops: [
+          [
+            '779955',
+            LandUseLookupSoil(4).color, //I think I can change these back to 0,1, etc..
+          ],
+          [
+            '780066',
+            LandUseLookupSoil(5).color,
+          ],
+          [
+            '780111',
+            LandUseLookupSoil(6).color,
+          ],
+          [
+            '780113',
+            LandUseLookupSoil(7).color,
+          ],
 
-          ]
-        }
+        ]
       }
-    })
+    }
+  })
   // add Atlantic White Cedar Layer from our external data folder
   //Instead of explictly calling a function just call the color here as its only 1
   map.addSource('awc-wetland-layer', {
     type: 'geojson',
     data: './data/awc_wetland.geojson',
-    });
+  });
 
 
-    map.addLayer({
-      id: 'Atlantic White Cedar Swamp ', //original Atlantic White Cedar Swamp
-      type: 'fill',
-      source: 'awc-wetland-layer',
-      paint: {
-           'fill-opacity': 0.9,
-           'fill-color': '#2A542B',
-         }
-       });
+  map.addLayer({
+    id: 'Atlantic White Cedar Swamp ', //original Atlantic White Cedar Swamp
+    type: 'fill',
+    source: 'awc-wetland-layer',
+    paint: {
+      'fill-opacity': 0.9,
+      'fill-color': {
+        type: 'categorical',
+        property: 'mukey',
+        stops: [
+          [
+            'WS2',
+            LandUseLookupSoil(8).color, //I think I can change these back to 0,1, etc..
+          ]
 
-console.log(map.getStyle().sources)
+
+        ]
+      }
+    }
+  })
+
+  console.log(map.getStyle().sources)
   // add an empty data source, which we will use to highlight the lot the user is hovering over
   map.addSource('highlight-feature', {
     type: 'geojson',
@@ -231,56 +251,53 @@ console.log(map.getStyle().sources)
     }
   });
 
-// Toggle layers in a little box on the right hand
-  var toggleableLayerIds = [ 'Atlantic White Cedar Swamp ', 'Wetland Soils', 'Urban Fill (Udorthents)'];
+  // Toggle layers in a little box on the right hand
+  var toggleableLayerIds = ['Atlantic White Cedar Swamp ', 'Wetland Soils', 'Urban Fill (Udorthents)'];
 
   for (var i = 0; i < toggleableLayerIds.length; i++) {
-      var id = toggleableLayerIds[i];
+    var id = toggleableLayerIds[i];
 
-      var link = document.createElement('a');
-      link.href = '#';
-      link.className = 'active';
-      link.textContent = id;
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
 
-      link.onclick = function (e) {
-          var clickedLayer = this.textContent;
-          e.preventDefault();
-          e.stopPropagation();
+    link.onclick = function(e) {
+      var clickedLayer = this.textContent;
+      e.preventDefault();
+      e.stopPropagation();
 
-          var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+      var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
 
-          if (visibility === 'visible') {
-              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-              this.className = '';
-          } else {
-              this.className = 'active';
-              map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-          }
-      };
+      if (visibility === 'visible') {
+        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        this.className = '';
+      } else {
+        this.className = 'active';
+        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+      }
+    };
 
-      var layers = document.getElementById('menu');
-      layers.appendChild(link);
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
   }
 
-  map.on('mousemove', function (e) {
+  map.on('mousemove', function(e) {
     // query for the features under the mouse, but only in the lots layer
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['Wetland Soils', 'Urban Fill (Udorthents)', 'Atlantic White Cedar Swamp '],
+      layers: ['Wetland Soils', 'Urban Fill (Udorthents)', 'Atlantic White Cedar Swamp '],
     });
 
     // if the mouse pointer is over a feature on our layer of interest
     // take the data for that feature and display it in the sidebar
     if (features.length > 0) {
-      map.getCanvas().style.cursor = 'pointer';  // make the cursor a pointer
+      map.getCanvas().style.cursor = 'pointer'; // make the cursor a pointer
 
       var hoveredFeature = features[0]
       var featureInfo = `
         <h4>${hoveredFeature.properties.mapunit_na}</h4>
-        <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey)).description}</p>
+        <p><strong>Land Use:</strong> ${LandUseLookupSoil(parseInt(hoveredFeature.properties.mukey))}</p>
 
-
-        <h4>${hoveredFeature.properties.IT_VALDESC} </h4>
-        <p><strong> Shape Area (SqMi) </strong> ${hoveredFeature.properties.AREASQMI}</p>
 
       `
       $('#feature-info').html(featureInfo)
